@@ -17,15 +17,32 @@ spec:
         image: otel/opentelemetry-collector-contrib:latest
         command:
           - "/otelcol-contrib"
-          - "--config=/etc/otel-collector-config.yaml"
+          - "--config=/conf/config.yaml"
         volumeMounts:
         - name: otel-collector-config-vol
-          mountPath: /etc/otel-collector-config.yaml
-          subPath: config.yaml
+          mountPath: /conf
         ports:
         - containerPort: 4317
         - containerPort: 4318
         - containerPort: 8889
+        - containerPort: 13133
+        resources:
+          requests:
+            memory: 128Mi
+            cpu: 100m
+          limits:
+            memory: 256Mi
+            cpu: 200m
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 13133
+          initialDelaySeconds: 30
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 13133
+          initialDelaySeconds: 10
       volumes:
       - configMap:
           name: otel-collector-config
