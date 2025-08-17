@@ -8,6 +8,7 @@ This repository deploys a comprehensive observability stack:
 - **OpenTelemetry Collector**: Receives, processes, and exports telemetry data
 - **Jaeger**: Distributed tracing backend for trace visualization
 - **Prometheus**: Metrics collection and storage
+- **Grafana**: Advanced dashboards and visualization for metrics
 - **Sample Application**: Mario game app for demonstration
 
 ## 📋 Prerequisites
@@ -42,6 +43,9 @@ kubectl port-forward service/jaeger-ui 16686:16686
 # Prometheus
 kubectl port-forward service/prometheus 9090:9090
 
+# Grafana
+kubectl port-forward service/grafana 3000:3000
+
 # OpenTelemetry Collector
 kubectl port-forward service/otel-collector 4317:4317
 ```
@@ -50,6 +54,7 @@ kubectl port-forward service/otel-collector 4317:4317
 - Mario App: http://localhost:8080
 - Jaeger UI: http://localhost:16686
 - Prometheus: http://localhost:9090
+- Grafana: http://localhost:3000 (admin/admin)
 
 ## 📁 Repository Structure
 
@@ -61,6 +66,7 @@ otel-nodejs-app/
 ├── otel-collector-deployment.yaml # OTel Collector deployment
 ├── jaeger-deployment.yaml       # Jaeger all-in-one deployment
 ├── prometheus-deployment.yaml   # Prometheus deployment
+├── grafana-deployment.yaml      # Grafana deployment with dashboards
 ├── deploy-observability.sh      # Automated deployment script
 ├── cleanup-observability.sh     # Cleanup script
 └── script.sh                   # Environment setup script
@@ -87,6 +93,12 @@ otel-nodejs-app/
 - Web UI on port `9090`
 - Configured to collect application metrics
 
+### Grafana
+- Advanced dashboards for metrics visualization
+- Pre-configured with Prometheus datasource
+- Web UI on port `3000` (admin/admin)
+- Better alerting and dashboard capabilities
+
 ## 🛠️ Manual Deployment
 
 If you prefer to deploy components individually:
@@ -102,7 +114,10 @@ kubectl apply -f jaeger-deployment.yaml
 # 3. Deploy Prometheus
 kubectl apply -f prometheus-deployment.yaml
 
-# 4. Deploy Sample Application
+# 4. Deploy Grafana
+kubectl apply -f grafana-deployment.yaml
+
+# 5. Deploy Sample Application
 kubectl apply -f deployment.yaml
 kubectl apply -f service.yaml
 ```
