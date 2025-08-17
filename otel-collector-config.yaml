@@ -11,15 +11,11 @@ data:
             endpoint: 0.0.0.0:4317
           http:
             endpoint: 0.0.0.0:4318
-      prometheus:
-        config:
-          scrape_configs:
-            - job_name: 'mario-app'
-              static_configs:
-                - targets: ['mario-service:80']
 
     processors:
       batch:
+        timeout: 1s
+        send_batch_size: 1024
 
     exporters:
       jaeger:
@@ -28,6 +24,8 @@ data:
           insecure: true
       prometheus:
         endpoint: "0.0.0.0:8889"
+      logging:
+        loglevel: info
 
     extensions:
       health_check:
@@ -39,8 +37,8 @@ data:
         traces:
           receivers: [otlp]
           processors: [batch]
-          exporters: [jaeger]
+          exporters: [jaeger, logging]
         metrics:
-          receivers: [otlp, prometheus]
+          receivers: [otlp]
           processors: [batch]
-          exporters: [prometheus]
+          exporters: [prometheus, logging]
