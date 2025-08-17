@@ -44,9 +44,9 @@ spec:
             port: 13133
           initialDelaySeconds: 10
       volumes:
-      - configMap:
+      - name: otel-collector-config-vol
+        configMap:
           name: otel-collector-config
-        name: otel-collector-config-vol
 ---
 apiVersion: v1
 kind: Service
